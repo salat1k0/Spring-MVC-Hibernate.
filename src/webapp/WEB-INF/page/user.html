@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>User </title>
+</head>
+<body>
+<h1>User</h1>
+
+
+<div>
+    <h2 th:text="${user != null} ? 'Edit User' : 'Add New User'">Add/Edit User</h2>
+    <form th:action="${user != null} ? @{/users/update} : @{/users/save}" method="post">
+        <input th:if="${user != null}" type="hidden" name="id" th:value="${user.id}">
+
+        <div>
+            <label>First Name:</label>
+            <input type="text" name="firstName" th:value="${user?.firstName}" required>
+        </div>
+
+        <div>
+            <label>Last Name:</label>
+            <input type="text" name="lastName" th:value="${user?.lastName}" required>
+        </div>
+
+        <div>
+            <label>Email:</label>
+            <input type="email" name="email" th:value="${user?.email}" required>
+        </div>
+
+        <button type="submit" th:text="${user != null} ? 'Update' : 'Save'">Save</button>
+        <a th:if="${user != null}" th:href="@{/users}">Cancel</a>
+    </form>
+</div>
+
+
+<h2>Users List</h2>
+<table border="1">
+    <tr>
+        <th>ID</th>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>Email</th>
+        <th>Actions</th>
+    </tr>
+    <tr th:each="user : ${users}">
+        <td th:text="${user.id}">1</td>
+        <td th:text="${user.firstName}">John</td>
+        <td th:text="${user.lastName}">Doe</td>
+        <td th:text="${user.email}">john@example.com</td>
+        <td>
+            <a th:href="@{/users/edit(id=${user.id})}">Edit</a>
+            <a th:href="@{/users/delete(id=${user.id})}"
+               onclick="return confirm('Delete this user?')">Delete</a>
+        </td>
+    </tr>
+</table>
+</body>
+</html>
